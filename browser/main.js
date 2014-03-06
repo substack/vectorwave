@@ -41,7 +41,7 @@ toolbox.appendTo('#workspace');
         var tstyle = window.getComputedStyle(target);
         var tpos = { x: parseInt(tstyle.left), y: parseInt(tstyle.top) };
         
-        var handles = elem.querySelectorAll('x-drag-handle');
+        var handles = elem.querySelectorAll('*[x-drag-handle]');
         if (handles.length === 0) handles = [ elem ];
         
         for (var j = 0; j < handles.length; j++) (function (h) {
