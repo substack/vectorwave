@@ -2,8 +2,8 @@ var fs = require('fs');
 var html = fs.readFileSync(__dirname + '/cursor.html', 'utf8');
 var domify = require('domify');
 var classList = require('class-list');
-var parseTime = require('./time/parse.js');
-var formatTime = require('./time/format.js');
+var parseTime = require('../time/parse.js');
+var formatTime = require('../time/format.js');
 
 module.exports = Cursor;
 

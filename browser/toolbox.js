@@ -2,8 +2,11 @@ var fs = require('fs');
 var html = fs.readFileSync(__dirname + '/toolbox.html', 'utf8');
 var domify = require('domify');
 var classList = require('class-list');
+var inherits = require('inherits');
+var EventEmitter = require('events').EventEmitter;
 
 module.exports = Toolbox;
+inherits(Toolbox, EventEmitter);
 
 function Toolbox () {
     var self = this;
@@ -22,7 +25,6 @@ function Toolbox () {
                 selected[mode] = classList(button);
                 selected[mode].add('selected');
             }
-            
             self.emit('click', button, name);
             self.emit(name, button);
         });
