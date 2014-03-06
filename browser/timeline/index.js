@@ -1,8 +1,11 @@
 var cursor = require('./cursor.js');
 var classList = require('class-list');
 var Mark = require('./mark.js');
+var inherits = require('inherits');
+var EventEmitter = require('events').EventEmitter;
 
 module.exports = Timeline;
+inherits(Timeline, EventEmitter);
 
 function Timeline (pxps) {
     if (!(this instanceof Timeline)) return new Timeline(pxps);
@@ -28,6 +31,8 @@ Timeline.prototype.mark = function () {
     var m = Mark(this.active.left.copy());
     this.marks.push(m);
     m.appendTo(this.element);
+    this.emit('mark', m);
+    return m;
 };
 
 Timeline.prototype._listen = function (div) {

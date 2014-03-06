@@ -10,12 +10,20 @@ function Mark (pos) {
     if (!(this instanceof Mark)) return new Mark(pos);
     
     this.pos = pos;
-    this.element = domify(html);
+    var div = this.element = domify(html);
+    div.addEventListener('mousedown', function (ev) {
+        window.addEventListener('mouseup', mouseup);
+        function mouseup () {
+            pos.setPixels(div.style.left);
+            window.removeEventListener('mouseup', mouseup);
+        }
+    });
     
     if (pos.px) self.element.style.left = pos.px;
     
     pos.on('left', function (px) {
         self.element.style.left = px;
+        console.log('px=', px);
     });
 }
 

@@ -54,12 +54,17 @@ body {
 }
 
 #timeline .mark {
+  cursor: hand;
   position: absolute;
   bottom: 0px;
   left: 0px;
-  width: 16px;
-  height: 16px;
-  background-color: purple;
+  width: 8px;
+  height: 48px;
+  background-color: rgb(180,20,240);
+}
+
+#timeline .mark:hover {
+  background-color: rgb(220,80,220);
 }
 
 .toolbox {
