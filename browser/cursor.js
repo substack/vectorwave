@@ -2,8 +2,8 @@ var fs = require('fs');
 var html = fs.readFileSync(__dirname + '/cursor.html', 'utf8');
 var domify = require('domify');
 var classList = require('class-list');
-var parseTime = require('./parse_time.js');
-var formatTime = require('./format_time.js');
+var parseTime = require('./time/parse.js');
+var formatTime = require('./time/format.js');
 
 module.exports = Cursor;
 
@@ -26,6 +26,14 @@ Cursor.prototype.setTime = function (time) {
     this.element.textContent = formatTime(seconds);
     this.element.style.left = seconds * this.pixelsPerSecond;
     return this;
+};
+
+Cursor.prototype.hide = function () {
+    this.element.style.display = 'none';
+};
+
+Cursor.prototype.show = function () {
+    this.element.style.display = 'block';
 };
 
 Cursor.prototype.setPixels = function (px) {
