@@ -2,29 +2,30 @@ var fs = require('fs');
 var html = fs.readFileSync(__dirname + '/cursor.html', 'utf8');
 var domify = require('domify');
 var classList = require('class-list');
-var parseTime = require('../time/parse.js');
 var formatTime = require('../time/format.js');
+var Left = require('./left.js');
 
 module.exports = Cursor;
 
 function Cursor (name, pxps) {
+    var self = this;
     if (!(this instanceof Cursor)) return new Cursor(name, pxps);
     this.element = domify(html);
     this.classList = classList(this.element);
     if (name) this.classList.add(name);
-    this.pixelsPerSecond = pxps;
+    
+    this.left = Left(pxps);
+    this.left.on('left', function (px) {
+        self.element.style.left = px;
+    });
+    this.left.on('seconds', function (seconds) {
+        self.element.textContent = formatTime(seconds);
+    });
 }
 
 Cursor.prototype.appendTo = function (target) {
     if (typeof target === 'string') target = document.querySelector(target);
     target.appendChild(this.element);
-    return this;
-};
-
-Cursor.prototype.setTime = function (time) {
-    var seconds = typeof time === 'number' ? time : parseTime(time);
-    this.element.textContent = formatTime(seconds);
-    this.element.style.left = seconds * this.pixelsPerSecond;
     return this;
 };
 
@@ -36,7 +37,10 @@ Cursor.prototype.show = function () {
     this.element.style.display = 'block';
 };
 
+Cursor.prototype.setTime = function (time) {
+    this.left.setTime(time);
+};
+
 Cursor.prototype.setPixels = function (px) {
-    var seconds = px / this.pixelsPerSecond;
-    this.setTime(seconds);
+    this.left.setPixels(px);
 };

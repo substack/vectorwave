@@ -3,14 +3,15 @@ var classList = require('class-list');
 
 module.exports = Timeline;
 
-function Timeline () {
-    if (!(this instanceof Timeline)) return new Timeline;
+function Timeline (pxps) {
+    if (!(this instanceof Timeline)) return new Timeline(pxps);
     var div = this.element = document.createElement('div');
     div.style.height = '100%';
     div.style.width = '100%';
     
-    this.active = cursor('active', 50).appendTo(div);
-    this.hover = cursor('hover', 50).appendTo(div);
+    this.pixelsPerSecond = pxps;
+    this.active = cursor('active', pxps).appendTo(div);
+    this.hover = cursor('hover', pxps).appendTo(div);
     this.hover.hide();
     this._listen(div);
 }
