@@ -1,0 +1,47 @@
+body {
+  background-color: rgb(170,170,170);
+  margin: 0px;
+}
+
+#canvas {
+  width: 640px;
+  height: 480px;
+  margin: auto;
+  background-color: white;
+  margin-top: 10px;
+}
+
+#workspace {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 150px;
+}
+
+#timeline {
+  background-color: rgb(50,50,50);
+  border: 1px solid white;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  height: 150px;
+  overflow-x: scroll;
+}
+
+#timeline .cursor {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  border-left-width: 2px;
+  border-left-color: rgb(127,127,127);
+  border-left-style: solid;
+  color: rgb(127,127,127);
+}
+
+#timeline .cursor.active {
+  border-left-color: white;
+  color: white;
+}
