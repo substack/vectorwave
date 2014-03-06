@@ -67,6 +67,10 @@ body {
   background-color: rgb(220,80,220);
 }
 
+#timeline .mark.dragging {
+  cursor: move;
+}
+
 .toolbox {
   position: absolute;
   left: 5px;
