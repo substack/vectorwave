@@ -28,6 +28,11 @@ body {
   right: 0px;
   height: 150px;
   overflow-x: scroll;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #timeline .cursor {
