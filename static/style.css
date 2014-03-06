@@ -82,6 +82,11 @@ body {
   background-color: white;
 }
 
+.toolbox button.selected {
+  background-color: rgb(127,127,127);
+  color: white;
+}
+
 .window .title {
   cursor: hand;
   height: 16px;
