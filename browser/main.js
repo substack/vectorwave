@@ -1,6 +1,6 @@
 var classList = require('class-list');
 
-var timeline = require('./timeline')(50).appendTo('#timeline');
+var timeline = require('./timeline')(100).appendTo('#timeline');
 var toolbox = require('./toolbox.js')();
 toolbox.appendTo('#workspace');
 

@@ -17,7 +17,7 @@ body {
   top: 0px;
   left: 0px;
   right: 0px;
-  bottom: 150px;
+  bottom: 45px;
 }
 
 #timeline {
@@ -27,13 +27,22 @@ body {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  height: 150px;
+  height: 45px;
   overflow-x: scroll;
   -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+#infoline {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 45px;
+  height: 15px;
+  background-color: rgb(220,220,220);
 }
 
 #timeline .cursor {
@@ -58,8 +67,8 @@ body {
   position: absolute;
   bottom: 0px;
   left: 0px;
-  width: 8px;
-  height: 48px;
+  width: 15px;
+  height: 15px;
   background-color: rgb(180,20,240);
 }
 
