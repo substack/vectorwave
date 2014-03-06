@@ -1,3 +1,5 @@
+var classList = require('class-list');
+
 module.exports = function () {
     var moving = [], last;
     window.addEventListener('mousemove', function (ev) {
