@@ -35,6 +35,7 @@ body {
   top: 0px;
   bottom: 0px;
   left: 0px;
+  padding-left: 2px;
   border-left-width: 2px;
   border-left-color: rgb(127,127,127);
   border-left-style: solid;
