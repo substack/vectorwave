@@ -5,6 +5,9 @@ var active = cursor('active', 50).appendTo(timeline);
 var hover = cursor('hover', 50).appendTo(timeline);
 
 timeline.addEventListener('mousemove', function (ev) {
-    var x = ev.clientX - this.offsetLeft;
-    hover.setPixels(x);
+    hover.setPixels(ev.clientX - this.offsetLeft);
+});
+
+timeline.addEventListener('click', function (ev) {
+    active.setPixels(ev.clientX - this.offsetLeft);
 });
