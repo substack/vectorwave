@@ -5,7 +5,7 @@ var toolbox = require('./toolbox.js')();
 toolbox.appendTo('#workspace');
 
 toolbox.on('K', function () {
-    console.log('K!!!');
+    timeline.mark();
 });
 
 (function () {

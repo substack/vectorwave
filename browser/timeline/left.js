@@ -26,14 +26,24 @@ Left.prototype.setTime = function (time) {
     this._lastPixels = null;
     this._lastTime = time;
     var seconds = typeof time === 'number' ? time : parseTime(time);
-    this.emit('seconds', seconds);
-    this.emit('left', seconds * this.pixelsPerSecond);
+    this.seconds = seconds;
+    this.px = seconds * this.pixelsPerSecond;
+    this.emit('seconds', this.seconds);
+    this.emit('left', this.px);
 };
 
 Left.prototype.setPixels = function (px) {
     this._lastPixels = px;
     this._lastTime = null;
     
-    this.emit('seconds', px / this.pixelsPerSecond);
-    this.emit('left', px);
+    this.seconds = px / this.pixelsPerSecond;
+    this.px = px;
+    this.emit('seconds', this.seconds);
+    this.emit('left', this.px);
+};
+
+Left.prototype.copy = function () {
+    var x = new Left(this.pixelsPerSecond);
+    if (this.seconds) x.setTime(this.seconds);
+    return x;
 };

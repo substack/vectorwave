@@ -1,5 +1,6 @@
 var cursor = require('./cursor.js');
 var classList = require('class-list');
+var Mark = require('./mark.js');
 
 module.exports = Timeline;
 
@@ -13,12 +14,20 @@ function Timeline (pxps) {
     this.active = cursor('active', pxps).appendTo(div);
     this.hover = cursor('hover', pxps).appendTo(div);
     this.hover.hide();
+    this.marks = [];
     this._listen(div);
 }
 
 Timeline.prototype.appendTo = function (target) {
     if (typeof target === 'string') target = document.querySelector(target);
     target.appendChild(this.element);
+    return this;
+};
+
+Timeline.prototype.mark = function () {
+    var m = Mark(this.active.left.copy());
+    this.marks.push(m);
+    m.appendTo(this.element);
 };
 
 Timeline.prototype._listen = function (div) {

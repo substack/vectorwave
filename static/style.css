@@ -53,6 +53,15 @@ body {
   color: white;
 }
 
+#timeline .mark {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 16px;
+  height: 16px;
+  background-color: purple;
+}
+
 .toolbox {
   position: absolute;
   left: 5px;
