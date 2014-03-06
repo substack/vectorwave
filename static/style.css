@@ -36,15 +36,6 @@ body {
   user-select: none;
 }
 
-#infoline {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  bottom: 45px;
-  height: 15px;
-  background-color: rgb(220,220,220);
-}
-
 #timeline .cursor {
   position: absolute;
   top: 0px;
@@ -74,6 +65,10 @@ body {
 
 #timeline .mark:hover {
   background-color: rgb(220,80,220);
+}
+
+#timeline .mark.active {
+  background-color: rgb(140,240,20);
 }
 
 #timeline .mark.dragging {

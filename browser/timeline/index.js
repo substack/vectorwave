@@ -28,7 +28,14 @@ Timeline.prototype.appendTo = function (target) {
 };
 
 Timeline.prototype.mark = function () {
+    var self = this;
     var m = Mark(this.active.left.copy());
+    m.on('click', function (div) {
+        for (var i = 0; i < self.marks.length; i++) {
+            classList(self.marks[i].element).remove('active');
+        }
+        classList(div).add('active');
+    });
     this.marks.push(m);
     m.appendTo(this.element);
     this.emit('mark', m);
