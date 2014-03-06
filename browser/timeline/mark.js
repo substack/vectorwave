@@ -11,6 +11,10 @@ function Mark (pos) {
     
     this.pos = pos;
     var div = this.element = domify(html);
+    div.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+    });
+    
     div.addEventListener('mousedown', function (ev) {
         window.addEventListener('mouseup', mouseup);
         function mouseup () {
