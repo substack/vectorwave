@@ -30,16 +30,31 @@ Timeline.prototype.appendTo = function (target) {
 Timeline.prototype.mark = function () {
     var self = this;
     var m = Mark(this.active.left.copy());
+    m.id = Math.floor(Math.random() * Math.pow(16,8)).toString(16);
     m.on('click', function (div) {
         for (var i = 0; i < self.marks.length; i++) {
             classList(self.marks[i].element).remove('active');
         }
         classList(div).add('active');
+        self._activeMark = m.id;
     });
     this.marks.push(m);
     m.appendTo(this.element);
     this.emit('mark', m);
     return m;
+};
+
+Timeline.prototype.removeMark = function (m) {
+    if (m === '_active') m = this._activeMark;
+    if (!m) return false;
+    for (var i = 0; i < this.marks.length; i++) {
+        if (this.marks[i].id === m) {
+            this.element.removeChild(this.marks[i].element);
+            this.marks.splice(i, 1);
+            return true;
+        }
+    }
+    return false;
 };
 
 Timeline.prototype._listen = function (div) {
