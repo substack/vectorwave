@@ -38,3 +38,7 @@ Mark.prototype.appendTo = function (target) {
     if (typeof target === 'string') target = document.querySelector(target);
     target.appendChild(this.element);
 };
+
+Mark.prototype.getSeconds = function () {
+    return this.left.seconds || 0;
+};

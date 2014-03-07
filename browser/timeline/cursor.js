@@ -41,6 +41,10 @@ Cursor.prototype.setTime = function (time) {
     this.left.setTime(time);
 };
 
+Cursor.prototype.getSeconds = function () {
+    return this.left.seconds || 0;
+};
+
 Cursor.prototype.setPixels = function (px) {
     this.left.setPixels(px);
 };

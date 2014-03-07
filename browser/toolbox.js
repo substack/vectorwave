@@ -14,10 +14,12 @@ function Toolbox () {
     var div = this.element = domify(html);
     var buttons = div.querySelectorAll('button');
     var selected = {};
+    this.buttons = {};
     
     for (var i = 0; i < buttons.length; i++) (function (button) {
         var mode = button.getAttribute('x-mode');
         var name = button.getAttribute('name');
+        self.buttons[name] = button;
         
         button.addEventListener('click', function () {
             if (mode && selected[mode]) selected[mode].remove('selected');

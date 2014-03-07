@@ -57,6 +57,38 @@ Timeline.prototype.removeMark = function (m) {
     return false;
 };
 
+Timeline.prototype.start = function () {
+    if (this._started) return;
+    var self = this;
+    this._started = Date.now();
+    this._offset = this.active.getSeconds();
+    window.requestAnimationFrame(function f () {
+        if (!self._started) return;
+        self._tick();
+        window.requestAnimationFrame(f);
+    });
+    this.emit('start');
+};
+
+Timeline.prototype._tick = function () {
+    this.active.setTime(this._offset + (Date.now() - this._started) / 1000);
+};
+
+Timeline.prototype.stop = function () {
+    if (!this._started) return;
+    this._started = 0;
+    this.emit('stop');
+};
+
+Timeline.prototype.toggle = function () {
+    if (this._started) this.stop()
+    else this.start()
+};
+
+Timeline.prototype.setTime = function () {
+    this.active.setTime
+};
+
 Timeline.prototype._listen = function (div) {
     var self = this;
     div.addEventListener('mouseover', function (ev) {

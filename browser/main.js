@@ -6,14 +6,39 @@ var timeline = require('./timeline')(100).appendTo('#timeline');
 var toolbox = require('./toolbox.js')();
 toolbox.appendTo('#workspace');
 
+var shift = false;
 window.addEventListener('keydown', function (ev) {
+    shift = ev.shiftKey;
     var chr = keycode(ev);
     if (chr === 'k') createMark();
     if (chr === 'delete') {
         timeline.removeMark('_active');
     }
 });
+window.addEventListener('keyup', function (ev) {
+    shift = ev.shiftKey;
+});
 toolbox.on('K', createMark);
+
+toolbox.on('back', function () {
+    console.log('0!');
+    timeline.active.setTime(0);
+});
+
+toolbox.on('foreward', function () {
+});
+
+toolbox.on('play', function () {
+    timeline.toggle();
+});
+
+timeline.on('start', function () {
+    toolbox.buttons.play.textContent = '||';
+});
+timeline.on('stop', function () {
+    toolbox.buttons.play.textContent = '>';
+});
+
 timeline.on('mark', function (m, elem) { scan(elem) });
 
 function createMark () {
@@ -24,12 +49,14 @@ function createMark () {
         currentMark = m;
     });
     
-    if (currentMark) {
+    if (currentMark && shift) {
         canvas[m.id] = pencil.parse(canvas[currentMark.id].toSource());
-        canvas[currentMark.id].hide();
     }
     else {
         canvas[m.id] = pencil();
+    }
+    if (currentMark) {
+        canvas[currentMark.id].hide();
     }
     canvas[m.id].appendTo('#canvas');
     currentMark = m;
