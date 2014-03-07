@@ -1,6 +1,6 @@
 {
   "name": "vectorwave",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "interactive dhtml 2d multimedia vector animation studio creative suite professional edition trial version",
   "main": "index.js",
   "bin": {
