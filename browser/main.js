@@ -8,14 +8,30 @@ timeline.appendTo('#timeline');
 var toolbox = require('./toolbox.js')();
 toolbox.appendTo('#workspace');
 
-var shift = false;
+var shift = false, inputtingText;
+window.addEventListener('click', function (ev) {
+    var tag = String(ev.target.tagName).toLowerCase();
+    inputtingText = /^(input|textarea)$/.test(tag);
+});
+window.addEventListener('blur', function (ev) {
+    inputtingText = false;
+});
 window.addEventListener('keydown', function (ev) {
     shift = ev.shiftKey;
+    if (inputtingText) return;
     var chr = keycode(ev);
     if (chr === 'k') createMark();
     if (chr === 'delete') timeline.removeMark('_active');
     if (chr === 'home') timeline.setTime(0);
     if (chr === 'space') timeline.toggle();
+    if (chr === 'left') {
+        ev.stopPropagation();
+        timeline.select('prev');
+    }
+    if (chr === 'right') {
+        ev.stopPropagation();
+        timeline.select('next');
+    }
 });
 window.addEventListener('keyup', function (ev) {
     shift = ev.shiftKey;
