@@ -55,6 +55,13 @@ timeline.on('show', function (mark) {
     currentMark = mark;
 });
 
+timeline.on('remove', function (mark) {
+    var e = canvas[mark.id].element;
+    e.parentNode.removeChild(e);
+    delete canvas[mark.id];
+    if (currentMark === mark) currentMark = undefined;
+});
+
 timeline.on('mark', function (m, elem) { scan(elem) });
 window.timeline = timeline;
 

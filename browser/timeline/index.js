@@ -83,15 +83,15 @@ Timeline.prototype.select = function (id) {
     var m = this.marks[ix];
     if (!m) return;
     
-    if (this._activeMark !== undefined) {
-        var i = this._markIndex(this._activeMark);
-        if (i >= 0) classList(this.marks[i].element).remove('active');
-    }
+    var prev = this.marks[this._current];
+    if (prev) classList(prev.element).remove('active');
+    this._current = ix;
+    
     classList(m.element).add('active');
     this._activeMark = m.id;
     
-    this.setTime(m.getSeconds());
-    this._setNearest(m.getSeconds());
+    this.active.setTime(m.getSeconds());
+    this.emit('show', m, ix);
 };
 
 Timeline.prototype.removeMark = function (m) {
@@ -99,8 +99,11 @@ Timeline.prototype.removeMark = function (m) {
     if (!m) return false;
     for (var i = 0; i < this.marks.length; i++) {
         if (this.marks[i].id === m) {
+            this.emit('remove', this.marks[i], i);
             this.element.removeChild(this.marks[i].element);
             this.marks.splice(i, 1);
+            var n = this.marks[i-1] || this.marks[0];
+            if (n) this.select(n.id);
             return true;
         }
     }
@@ -135,7 +138,12 @@ Timeline.prototype._setNearest = function (sec) {
     var i = this._findNearest(sec);
     var cmp = this._current !== i;
     this._current = i;
-    if (cmp) this.emit('show', this.marks[i], i);
+    if (cmp) {
+        var m = this.marks[i];
+        classList(m.element).add('active');
+        this._activeMark = m.id;
+        this.emit('show', this.marks[i], i);
+    }
     return i;
 };
 
@@ -145,6 +153,10 @@ Timeline.prototype._tick = function () {
     var m = this.marks[this._current + 1];
     if (!m) return;
     if (t >= m.getSeconds()) {
+        var p = this.marks[this._current];
+        if (p) classList(p.element).remove('active');
+        classList(m.element).add('active');
+        this._activeMark = m.id;
         this._current ++;
         this.emit('show', m, this._current);
     }
@@ -162,6 +174,8 @@ Timeline.prototype.toggle = function () {
 };
 
 Timeline.prototype.setTime = function (x) {
+    var p = this.marks[this._current];
+    if (p) classList(p.element).remove('active');
     this.active.setTime(x);
     this._setNearest(x);
 };
