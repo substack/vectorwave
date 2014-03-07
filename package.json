@@ -15,7 +15,8 @@
     "keycode": "~0.3.0",
     "minimist": "0.0.8",
     "svg-morph": "~0.0.0",
-    "svg-pencil": "~1.2.0"
+    "svg-pencil": "~1.2.0",
+    "editor-timeline": "~0.0.0"
   },
   "devDependencies": {
     "tape": "~2.3.2",
