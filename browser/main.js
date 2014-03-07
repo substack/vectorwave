@@ -24,7 +24,17 @@ window.addEventListener('keydown', function (ev) {
     if (chr === 'k') createMark();
     if (chr === 's') toolbox.select('select');
     if (chr === 'p') toolbox.select('pencil');
-    if (chr === 'delete') timeline.removeMark('_active');
+    if (chr === 'delete') {
+        if (toolbox.current === 'select') {
+            var sel = canvas[currentMark.id].sel;
+            var e = sel.selected;
+            e.parentNode.removeChild(e);
+            sel.selected = null;
+        }
+        else {
+            timeline.removeMark('_active');
+        }
+    }
     if (chr === 'home') { stop(); timeline.setTime(0) }
     if (chr === 'space') timeline.toggle();
     if (chr === 'left') { stop(); timeline.select('prev') }
@@ -94,7 +104,10 @@ function createMark () {
     currentMark = m;
     timeline.select(m.id);
     
-    var sel = svgSelect(canvas[m.id].element);
+    var c = canvas[m.id], down = false, last;
+    var sel = svgSelect(c.element);
+    c.sel = sel;
+    
     sel.disable();
     sel.on('select', function (p) {
         p.style.stroke = 'red';
@@ -102,8 +115,10 @@ function createMark () {
     sel.on('blur', function (p) {
         p.style.stroke = 'black';
     });
-    var last;
-    var c = canvas[m.id], down = false;
+    c.on('path', function (p) {
+        p.style.strokeWidth = 4;
+    });
+    
     window.addEventListener('mousedown', function (ev) {
         last = ev;
         down = true;

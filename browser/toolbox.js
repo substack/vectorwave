@@ -29,6 +29,7 @@ function Toolbox () {
 Toolbox.prototype.select = function (name) {
     var button = this.buttons[name];
     var mode = button.getAttribute('x-mode');
+    this.current = name;
     
     if (mode && this.selected[mode]) {
         this.selected[mode].remove('selected');
