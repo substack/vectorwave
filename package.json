@@ -3,12 +3,17 @@
   "version": "0.0.0",
   "description": "interactive dhtml 2d multimedia vector animation studio creative suite professional edition trial version",
   "main": "index.js",
+  "bin": {
+    "vectorwave": "bin/cmd.js"
+  },
   "dependencies": {
     "brfs": "~1.0.0",
     "class-list": "~0.1.1",
     "domify": "~1.2.2",
+    "ecstatic": "^0.4.13",
     "inherits": "~2.0.1",
     "keycode": "~0.3.0",
+    "minimist": "0.0.8",
     "svg-morph": "~0.0.0",
     "svg-pencil": "~1.2.0"
   },
