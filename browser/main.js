@@ -22,17 +22,14 @@ window.addEventListener('keydown', function (ev) {
     var chr = keycode(ev);
     if (chr === 'k') createMark();
     if (chr === 'delete') timeline.removeMark('_active');
-    if (chr === 'home') timeline.setTime(0);
+    if (chr === 'home') { stop(); timeline.setTime(0) }
     if (chr === 'space') timeline.toggle();
-    if (chr === 'left') {
+    if (chr === 'left') { stop(); timeline.select('prev') }
+    if (chr === 'right') { stop(); timeline.select('next') }
+    
+    function stop () {
         ev.stopPropagation();
         ev.preventDefault();
-        timeline.select('prev');
-    }
-    if (chr === 'right') {
-        ev.stopPropagation();
-        ev.preventDefault();
-        timeline.select('next');
     }
 });
 window.addEventListener('keyup', function (ev) {
