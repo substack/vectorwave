@@ -25,7 +25,8 @@
   "scripts": {
     "test": "tape test/*.js",
     "watch": "watchify -t brfs browser/main.js -o static/bundle.js -dv",
-    "build": "browserify -t brfs browser/main.js -o static/bundle.js"
+    "build": "browserify -t brfs browser/main.js -o static/bundle.js",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
