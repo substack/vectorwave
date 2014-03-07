@@ -95,6 +95,15 @@ function createMark () {
     timeline.select(m.id);
     
     var sel = svgSelect(canvas[m.id].element);
+    sel.disable();
+    sel.on('select', function (p) {
+        p.style.stroke = 'red';
+    });
+    sel.on('blur', function (p) {
+        p.style.stroke = 'black';
+    });
+    canvas[m.id].on('enable', function () { sel.disable() });
+    canvas[m.id].on('disable', function () { sel.enable() });
 }
 
 var canvas = {}, currentMark;
