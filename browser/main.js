@@ -21,11 +21,7 @@ window.addEventListener('keyup', function (ev) {
 toolbox.on('K', createMark);
 
 toolbox.on('back', function () {
-    console.log('0!');
-    timeline.active.setTime(0);
-});
-
-toolbox.on('foreward', function () {
+    timeline.setTime(0);
 });
 
 toolbox.on('play', function () {
@@ -39,7 +35,14 @@ timeline.on('stop', function () {
     toolbox.buttons.play.textContent = '>';
 });
 
+timeline.on('show', function (mark) {
+    if (currentMark) canvas[currentMark.id].hide();
+    canvas[mark.id].show();
+    currentMark = mark;
+});
+
 timeline.on('mark', function (m, elem) { scan(elem) });
+window.timeline = timeline;
 
 function createMark () {
     var m = timeline.mark();

@@ -33,6 +33,7 @@ Left.prototype.setTime = function (time) {
 };
 
 Left.prototype.setPixels = function (px) {
+    if (typeof px === 'string') px = parseInt(px);
     this._lastPixels = px;
     this._lastTime = null;
     

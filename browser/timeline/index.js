@@ -8,6 +8,7 @@ module.exports = Timeline;
 inherits(Timeline, EventEmitter);
 
 function Timeline (pxps) {
+    var self = this;
     if (!(this instanceof Timeline)) return new Timeline(pxps);
     var div = this.element = document.createElement('div');
     div.style.height = '100%';
@@ -37,11 +38,35 @@ Timeline.prototype.mark = function () {
         }
         classList(div).add('active');
         self._activeMark = m.id;
+        
+        self.setTime(m.getSeconds());
+        self._setNearest(m.getSeconds());
     });
-    this.marks.push(m);
+    m.on('seconds', function (sec) {
+        for (var i = 0; i < self._marks; i++) {
+            if (self.marks[i] === m) {
+                self.marks.splice(i, 1);
+                insert(m);
+            }
+        }
+    });
+    
+    insert(m);
+    
     m.appendTo(this.element);
     this.emit('mark', m, m.element);
     return m;
+    
+    function insert () {
+        // todo binary search whatever
+        for (var i = 0; i < self.marks.length; i++) {
+            if (m.getSeconds() < self.marks[i].getSeconds()) {
+                self.marks.splice(i, 0, m);
+                return;
+            }
+        }
+        self.marks.push(m);
+    }
 };
 
 Timeline.prototype.removeMark = function (m) {
@@ -62,12 +87,32 @@ Timeline.prototype.start = function () {
     var self = this;
     this._started = Date.now();
     this._offset = this.active.getSeconds();
+    this._current = this._findNearest(this._offset);
+    
     window.requestAnimationFrame(function f () {
         if (!self._started) return;
         self._tick();
         window.requestAnimationFrame(f);
     });
     this.emit('start');
+};
+
+Timeline.prototype._findNearest = function (x) {
+    for (var i = 0; i < this.marks.length; i++) {
+        var m = this.marks[i];
+        if (x < m.getSeconds()) {
+            return i === 0 ? this.marks[0] : this.marks[i - 1];
+        }
+    }
+    return this.marks[this.marks.length-1];
+};
+
+Timeline.prototype._setNearest = function (sec) {
+    var c = this._findNearest(sec);
+    var cmp = this._current !== c;
+    this._current = c;
+    if (cmp) this.emit('show', c);
+    this.emit('show', c);
 };
 
 Timeline.prototype._tick = function () {
@@ -85,8 +130,13 @@ Timeline.prototype.toggle = function () {
     else this.start()
 };
 
-Timeline.prototype.setTime = function () {
-    this.active.setTime
+Timeline.prototype.setTime = function (x) {
+    this.active.setTime(x);
+    this._current = this._findNearest(x);
+};
+
+Timeline.prototype.getTime = function () {
+    return this.active.getSeconds();
 };
 
 Timeline.prototype._listen = function (div) {
@@ -106,5 +156,6 @@ Timeline.prototype._listen = function (div) {
     
     div.addEventListener('click', function (ev) {
         self.active.setPixels(ev.clientX - this.offsetLeft);
+        self._setNearest(self.getTime());
     });
 };

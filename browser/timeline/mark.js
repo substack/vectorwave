@@ -32,6 +32,9 @@ function Mark (pos) {
     pos.on('left', function (px) {
         self.element.style.left = px;
     });
+    pos.on('seconds', function (sec) {
+        self.emit('seconds', sec);
+    });
 }
 
 Mark.prototype.appendTo = function (target) {
@@ -40,5 +43,5 @@ Mark.prototype.appendTo = function (target) {
 };
 
 Mark.prototype.getSeconds = function () {
-    return this.left.seconds || 0;
+    return this.pos.seconds || 0;
 };
