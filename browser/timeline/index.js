@@ -17,6 +17,8 @@ function Timeline (pxps) {
     this.pixelsPerSecond = pxps;
     this.active = cursor('active', pxps).appendTo(div);
     this.hover = cursor('hover', pxps).appendTo(div);
+    this.active.setTime(0);
+    
     this.hover.hide();
     this.marks = [];
     this._listen(div);
@@ -87,7 +89,6 @@ Timeline.prototype.start = function () {
     var self = this;
     this._started = Date.now();
     this._offset = this.active.getSeconds();
-    this._current = this._findNearest(this._offset);
     
     window.requestAnimationFrame(function f () {
         if (!self._started) return;
@@ -100,23 +101,30 @@ Timeline.prototype.start = function () {
 Timeline.prototype._findNearest = function (x) {
     for (var i = 0; i < this.marks.length; i++) {
         var m = this.marks[i];
-        if (x < m.getSeconds()) {
-            return i === 0 ? this.marks[0] : this.marks[i - 1];
+        if (x <= m.getSeconds()) {
+            return i === 0 ? 0 : i - 1;
         }
     }
-    return this.marks[this.marks.length-1];
+    return this.marks.length - 1;
 };
 
 Timeline.prototype._setNearest = function (sec) {
-    var c = this._findNearest(sec);
-    var cmp = this._current !== c;
-    this._current = c;
-    if (cmp) this.emit('show', c);
-    this.emit('show', c);
+    var i = this._findNearest(sec);
+    var cmp = this._current !== i;
+    this._current = i;
+    if (cmp) this.emit('show', this.marks[i], i);
+    return i;
 };
 
 Timeline.prototype._tick = function () {
-    this.active.setTime(this._offset + (Date.now() - this._started) / 1000);
+    var t = this._offset + (Date.now() - this._started) / 1000;
+    this.active.setTime(t);
+    var m = this.marks[this._current + 1];
+    if (!m) return;
+    if (t >= m.getSeconds()) {
+        this._current ++;
+        this.emit('show', m, this._current);
+    }
 };
 
 Timeline.prototype.stop = function () {
@@ -132,7 +140,7 @@ Timeline.prototype.toggle = function () {
 
 Timeline.prototype.setTime = function (x) {
     this.active.setTime(x);
-    this._current = this._findNearest(x);
+    this._setNearest(x);
 };
 
 Timeline.prototype.getTime = function () {
