@@ -1,5 +1,6 @@
 var keycode = require('keycode');
 var scan = require('./scan.js')();
+var pencil = require('svg-pencil');
 
 var timeline = require('./timeline')(100).appendTo('#timeline');
 var toolbox = require('./toolbox.js')();
@@ -13,8 +14,14 @@ window.addEventListener('keydown', function (ev) {
     }
 });
 toolbox.on('K', createMark);
+function createMark () { timeline.mark() }
 
-function createMark () {
-    scan(timeline.mark().element);
-}
+var currentCanvas = pencil();
+currentCanvas.appendTo('#canvas');
+
+var floating = [];
+timeline.on('mark', function (m, elem) {
+    floating.push(m);
+    scan(elem);
+});
 scan(document);

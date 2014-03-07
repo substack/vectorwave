@@ -91,6 +91,17 @@ body {
   user-select: none;
 }
 
+.toolbox .bottom {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+button.b {
+  font-weight: bold;
+}
+
 .toolbox button {
   cursor: pointer;
   width: 32px;

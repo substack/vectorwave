@@ -31,7 +31,6 @@ function Mark (pos) {
     
     pos.on('left', function (px) {
         self.element.style.left = px;
-        console.log('px=', px);
     });
 }
 

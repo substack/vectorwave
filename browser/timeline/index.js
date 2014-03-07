@@ -40,7 +40,7 @@ Timeline.prototype.mark = function () {
     });
     this.marks.push(m);
     m.appendTo(this.element);
-    this.emit('mark', m);
+    this.emit('mark', m, m.element);
     return m;
 };
 
