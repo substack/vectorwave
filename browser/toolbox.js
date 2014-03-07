@@ -13,25 +13,33 @@ function Toolbox () {
     if (!(this instanceof Toolbox)) return new Toolbox;
     var div = this.element = domify(html);
     var buttons = div.querySelectorAll('button');
-    var selected = {};
+    this.selected = {};
     this.buttons = {};
     
     for (var i = 0; i < buttons.length; i++) (function (button) {
-        var mode = button.getAttribute('x-mode');
         var name = button.getAttribute('name');
         self.buttons[name] = button;
         
         button.addEventListener('click', function () {
-            if (mode && selected[mode]) selected[mode].remove('selected');
-            if (mode) {
-                selected[mode] = classList(button);
-                selected[mode].add('selected');
-            }
-            self.emit('click', button, name);
-            self.emit(name, button);
+            self.setMode(name);
         });
     })(buttons[i]);
 }
+
+Toolbox.prototype.select = function (name) {
+    var button = this.buttons[name];
+    var mode = button.getAttribute('x-mode');
+    
+    if (mode && this.selected[mode]) {
+        this.selected[mode].remove('selected');
+    }
+    if (mode) {
+        this.selected[mode] = classList(button);
+        this.selected[mode].add('selected');
+    }
+    this.emit('click', button, name);
+    this.emit(name, button);
+};
 
 Toolbox.prototype.appendTo = function (target) {
     if (typeof target === 'string') target = document.querySelector(target);

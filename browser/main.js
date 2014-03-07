@@ -1,6 +1,7 @@
 var keycode = require('keycode');
 var scan = require('./scan.js')();
 var pencil = require('svg-pencil');
+var svgSelect = require('svg-select');
 
 var timeline = require('editor-timeline')(200);
 timeline.appendTo('#timeline');
@@ -21,6 +22,8 @@ window.addEventListener('keydown', function (ev) {
     if (inputtingText) return;
     var chr = keycode(ev);
     if (chr === 'k') createMark();
+    if (chr === 's') toolbox.select('select');
+    if (chr === 'p') toolbox.select('pencil');
     if (chr === 'delete') timeline.removeMark('_active');
     if (chr === 'home') { stop(); timeline.setTime(0) }
     if (chr === 'space') timeline.toggle();
@@ -38,6 +41,15 @@ window.addEventListener('keyup', function (ev) {
 toolbox.on('K', createMark);
 toolbox.on('back', function () { timeline.setTime(0) });
 toolbox.on('play', function () { timeline.toggle() });
+
+toolbox.on('click', function (button, name) {
+    var keys = Object.keys(canvas);
+    for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        if (name === 'pencil') canvas[k].enable();
+        else canvas[k].disable();
+    }
+});
 
 timeline.on('start', function () {
     toolbox.buttons.play.textContent = '||';
@@ -60,7 +72,6 @@ timeline.on('remove', function (mark) {
 });
 
 timeline.on('mark', function (m, elem) { scan(elem) });
-window.timeline = timeline;
 
 function createMark () {
     var m = timeline.mark();
@@ -82,9 +93,11 @@ function createMark () {
     canvas[m.id].appendTo('#canvas');
     currentMark = m;
     timeline.select(m.id);
+    
+    var sel = svgSelect(canvas[m.id].element);
 }
 
 var canvas = {}, currentMark;
 createMark();
-
+toolbox.select('pencil');
 scan(document);
