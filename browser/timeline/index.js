@@ -12,7 +12,7 @@ function Timeline (pxps) {
     if (!(this instanceof Timeline)) return new Timeline(pxps);
     var div = this.element = document.createElement('div');
     div.style.height = '100%';
-    div.style.width = '100%';
+    div.style.minWidth = (pxps * 60 * 2) + 'px';
     
     this.pixelsPerSecond = pxps;
     this.active = cursor('active', pxps).appendTo(div);
@@ -158,12 +158,14 @@ Timeline.prototype._listen = function (div) {
     });
     
     div.addEventListener('mousemove', function (ev) {
-        self.hover.setPixels(ev.clientX - this.offsetLeft);
+        var sx = div.getBoundingClientRect().left;
+        self.hover.setPixels(ev.clientX - this.offsetLeft - sx);
         self.hover.show();
     });
     
     div.addEventListener('click', function (ev) {
-        self.active.setPixels(ev.clientX - this.offsetLeft);
+        var sx = div.getBoundingClientRect().left;
+        self.active.setPixels(ev.clientX - this.offsetLeft - sx);
         self._setNearest(self.getTime());
     });
 };
