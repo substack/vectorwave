@@ -1,3 +1,3 @@
-# markup-vector-creator
+# vectorwave
 
 create multimedia dhtml interactive presentations
