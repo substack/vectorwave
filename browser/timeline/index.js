@@ -34,16 +34,7 @@ Timeline.prototype.mark = function () {
     var self = this;
     var m = Mark(this.active.left.copy());
     m.id = Math.floor(Math.random() * Math.pow(16,8)).toString(16);
-    m.on('click', function (div) {
-        for (var i = 0; i < self.marks.length; i++) {
-            classList(self.marks[i].element).remove('active');
-        }
-        classList(div).add('active');
-        self._activeMark = m.id;
-        
-        self.setTime(m.getSeconds());
-        self._setNearest(m.getSeconds());
-    });
+    m.on('click', function (div) { self.select(m.id) });
     m.on('seconds', function (sec) {
         for (var i = 0; i < self._marks; i++) {
             if (self.marks[i] === m) {
@@ -69,6 +60,37 @@ Timeline.prototype.mark = function () {
         }
         self.marks.push(m);
     }
+};
+
+Timeline.prototype._markIndex = function (id) {
+    for (var i = 0; i < this.marks.length; i++) {
+        if (this.marks[i].id === id) return i;
+    }
+    return -1;
+};
+
+Timeline.prototype.select = function (id) {
+    if (this._activeMark) {
+        var i = this._markIndex(this._activeMark);
+        if (i) classList(this.marks[i].element).remove('active');
+    }
+    var ix;
+    if (id === 'next') {
+        ix = this._markIndex(this._activeMark) + 1;
+    }
+    else if (id === 'prev') {
+        ix = this._markIndex(this._activeMark) - 1;
+    }
+    else {
+        ix = this._markIndex(id);
+    }
+    var m = this.marks[ix];
+    if (!m) return;
+    classList(m.element).add('active');
+    this._activeMark = m.id;
+    
+    this.setTime(m.getSeconds());
+    this._setNearest(m.getSeconds());
 };
 
 Timeline.prototype.removeMark = function (m) {
