@@ -102,8 +102,34 @@ function createMark () {
     sel.on('blur', function (p) {
         p.style.stroke = 'black';
     });
-    canvas[m.id].on('enable', function () { sel.disable() });
-    canvas[m.id].on('disable', function () { sel.enable() });
+    var last;
+    var c = canvas[m.id], down = false;
+    window.addEventListener('mousedown', function (ev) {
+        last = ev;
+        down = true;
+    });
+    window.addEventListener('mouseup', function (ev) { down = false });
+    window.addEventListener('mousemove', function (ev) {
+        if (!down) return;
+        var dx = last ? ev.clientX - last.clientX : 0;
+        var dy = last ? ev.clientY - last.clientY : 0;
+        last = ev;
+        if (!sel.enabled) return;
+        if (!sel.selected) return;
+        var parts = sel.selected.getAttribute('d').split(/\s+/);
+        sel.selected.setAttribute('d', parts.map(function (x) {
+            if (/^[\d.]+,[\d.]+$/.test(x)) {
+                var s = x.split(',');
+                var x = Number(s[0]) + dx;
+                var y = Number(s[1]) + dy;
+                return x + ',' + y;
+            }
+            return x;
+        }).join(' '));
+    });
+    
+    c.on('enable', function () { sel.disable() });
+    c.on('disable', function () { sel.enable(); down = false });
 }
 
 var canvas = {}, currentMark;
