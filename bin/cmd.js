@@ -17,5 +17,5 @@ server.listen(argv.port);
 
 server.on('listening', function () {
     var port = server.address().port;
-    console.log('listening on http://localhost:' + port);
+    console.log('listening at http://localhost:' + port);
 });
