@@ -2,7 +2,9 @@ var keycode = require('keycode');
 var scan = require('./scan.js')();
 var pencil = require('svg-pencil');
 
-var timeline = require('./timeline')(100).appendTo('#timeline');
+var timeline = require('./timeline')(200);
+timeline.appendTo('#timeline');
+
 var toolbox = require('./toolbox.js')();
 toolbox.appendTo('#workspace');
 
