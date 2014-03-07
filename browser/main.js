@@ -14,14 +14,28 @@ window.addEventListener('keydown', function (ev) {
     }
 });
 toolbox.on('K', createMark);
-function createMark () { timeline.mark() }
+timeline.on('mark', function (m, elem) { scan(elem) });
 
-var currentCanvas = pencil();
-currentCanvas.appendTo('#canvas');
+function createMark () {
+    var m = timeline.mark();
+    m.on('click', function () {
+        if (currentMark) canvas[currentMark.id].hide();
+        canvas[m.id].show();
+        currentMark = m;
+    });
+    
+    if (currentMark) {
+        canvas[m.id] = pencil.parse(canvas[currentMark.id].toSource());
+        canvas[currentMark.id].hide();
+    }
+    else {
+        canvas[m.id] = pencil();
+    }
+    canvas[m.id].appendTo('#canvas');
+    currentMark = m;
+}
 
-var floating = [];
-timeline.on('mark', function (m, elem) {
-    floating.push(m);
-    scan(elem);
-});
+var canvas = {}, currentMark;
+createMark();
+
 scan(document);

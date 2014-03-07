@@ -12,7 +12,7 @@
     "inherits": "~2.0.1",
     "keycode": "~0.3.0",
     "svg-morph": "~0.0.0",
-    "svg-pencil": "~1.0.0"
+    "svg-pencil": "~1.2.0"
   },
   "devDependencies": {
     "browserify": "~3.32.0",
