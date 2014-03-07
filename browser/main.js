@@ -13,22 +13,16 @@ window.addEventListener('keydown', function (ev) {
     shift = ev.shiftKey;
     var chr = keycode(ev);
     if (chr === 'k') createMark();
-    if (chr === 'delete') {
-        timeline.removeMark('_active');
-    }
+    if (chr === 'delete') timeline.removeMark('_active');
+    if (chr === 'home') timeline.setTime(0);
+    if (chr === 'space') timeline.toggle();
 });
 window.addEventListener('keyup', function (ev) {
     shift = ev.shiftKey;
 });
 toolbox.on('K', createMark);
-
-toolbox.on('back', function () {
-    timeline.setTime(0);
-});
-
-toolbox.on('play', function () {
-    timeline.toggle();
-});
+toolbox.on('back', function () { timeline.setTime(0) });
+toolbox.on('play', function () { timeline.toggle() });
 
 timeline.on('start', function () {
     toolbox.buttons.play.textContent = '||';
