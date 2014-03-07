@@ -70,10 +70,6 @@ Timeline.prototype._markIndex = function (id) {
 };
 
 Timeline.prototype.select = function (id) {
-    if (this._activeMark) {
-        var i = this._markIndex(this._activeMark);
-        if (i) classList(this.marks[i].element).remove('active');
-    }
     var ix;
     if (id === 'next') {
         ix = this._markIndex(this._activeMark) + 1;
@@ -86,6 +82,11 @@ Timeline.prototype.select = function (id) {
     }
     var m = this.marks[ix];
     if (!m) return;
+    
+    if (this._activeMark !== undefined) {
+        var i = this._markIndex(this._activeMark);
+        if (i >= 0) classList(this.marks[i].element).remove('active');
+    }
     classList(m.element).add('active');
     this._activeMark = m.id;
     

@@ -26,10 +26,12 @@ window.addEventListener('keydown', function (ev) {
     if (chr === 'space') timeline.toggle();
     if (chr === 'left') {
         ev.stopPropagation();
+        ev.preventDefault();
         timeline.select('prev');
     }
     if (chr === 'right') {
         ev.stopPropagation();
+        ev.preventDefault();
         timeline.select('next');
     }
 });
@@ -75,6 +77,7 @@ function createMark () {
     }
     canvas[m.id].appendTo('#canvas');
     currentMark = m;
+    timeline.select(m.id);
 }
 
 var canvas = {}, currentMark;
